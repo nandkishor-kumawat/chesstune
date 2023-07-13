@@ -11,13 +11,12 @@ import ArrowRightSvg from '../assets/arrowright.svg'
 import GlobalSvg from '../assets/global.svg'
 import InstagramSvg from '../assets/instagram.svg'
 import SearchSvg from '../assets/search.svg'
-import { useNavigation } from '@react-navigation/native';
+import Header from '../components/Header';
 
 
 
 const HomeScreen = () => {
     const { width, height } = Dimensions.get('window');
-    const navigation = useNavigation();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,49 +38,7 @@ const HomeScreen = () => {
                                 flex: 1
                             }}
                         >
-                            <View
-                                style={{
-                                    height: 80,
-                                    justifyContent: 'space-between',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    padding: 15,
-                                    marginBottom: 15
-                                }}
-                            >
-                                <View>
-                                    <Image source={require('../assets/logo.png')} />
-                                </View>
-
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        gap: 15,
-                                        alignItems: 'center',
-                                    }}
-
-                                >
-                                    <TouchableOpacity>
-                                        <Image
-                                            style={{
-                                                width: 26,
-                                                height: 26
-                                            }}
-                                            source={require('../assets/menu.png')} />
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate('LoginScreen')}
-                                    >
-                                        <Image
-                                            style={{
-                                                width: 26,
-                                                height: 26
-                                            }}
-                                            source={require('../assets/profile.png')} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+                            <Header/>
 
                             <View
                                 style={{

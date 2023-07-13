@@ -4,6 +4,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/screens/LoginScreen';
+import Puzzle from './src/screens/Puzzle';
 
 const Stack = createStackNavigator();
 
@@ -16,13 +17,14 @@ export default function App() {
         barStyle="light-content"
       />
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Puzzle"
         screenOptions={{
           headerShown: false
         }}
       >
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Puzzle" component={Puzzle} />
       </Stack.Navigator>
     </NavigationContainer>
 
