@@ -1,10 +1,36 @@
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import Header from '../components/Header'
-import ChessBoard from '../components/ChessBoard'
+
+import { Chess } from 'chess.js';
+
+import ChessWebAPI from 'chess-web-api'
+import Board from '../Chess/Board';
+
+
 
 const Puzzle = () => {
+    // const [game, setGame] = useState();
+
+    // useEffect(() => {
+    //     // Run any necessary initialization code here
+    //     // const game = new Chess()
+
+    //     const chessAPI = new ChessWebAPI();
+    //     chessAPI.getDailyPuzzleRandom().then(a => {
+    //         // console.log(a)
+    //         let game = new Chess(a.body.fen)
+    //         // console.log(game.board())
+    //         console.log(a)
+    //         // console.log(game.fen())
+    //     });
+
+    // }, []);
+
+
+    const chessRef = useRef()
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -14,7 +40,8 @@ const Puzzle = () => {
                     style={{
                         width: 280,
                         height: 60,
-                        ...styles.box
+                        ...styles.box,
+                        marginBottom: 20
                     }}
                 >
                     <Text
@@ -31,16 +58,17 @@ const Puzzle = () => {
                 <View
                     paddingHorizontal={15}
                 >
-                    {/* <View
-                    style={{
-                        // backgroundColor:'red',
-                        width: '100%',
-                        aspectRatio: 1
-                    }}
+                    <View
+                        ref={chessRef}
+                        style={{
+                            // backgroundColor: 'red',
+                            width: '100%',
+                            // aspectRatio: 1
+                        }}
                     >
+                        <Board />
+                    </View>
 
-                    </View> */}
-                    {/* <ChessBoard /> */}
                 </View>
 
 

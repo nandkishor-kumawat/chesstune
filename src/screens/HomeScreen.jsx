@@ -12,12 +12,13 @@ import GlobalSvg from '../assets/global.svg'
 import InstagramSvg from '../assets/instagram.svg'
 import SearchSvg from '../assets/search.svg'
 import Header from '../components/Header';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 const HomeScreen = () => {
     const { width, height } = Dimensions.get('window');
-
+    const navigation = useNavigation();
     return (
         <SafeAreaView style={styles.container}>
 
@@ -38,7 +39,7 @@ const HomeScreen = () => {
                                 flex: 1
                             }}
                         >
-                            <Header/>
+                            <Header />
 
                             <View
                                 style={{
@@ -87,7 +88,7 @@ const HomeScreen = () => {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.box}>
-                                        <TouchableOpacity style={styles.ibox}>
+                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Puzzle')}>
                                             <GraphSvg width="20" height="20" />
                                             <Text style={styles.text2}>Daily Puzzle</Text>
                                         </TouchableOpacity>
