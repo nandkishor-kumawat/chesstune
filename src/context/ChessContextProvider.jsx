@@ -1,9 +1,29 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { createContext } from 'react'
 import { useContext } from 'react';
 import { useState } from 'react';
 import { toPosition } from '../Chess2/Notation';
+import { makeBestMove } from '../Chess2/script';
+import { Chess } from "chess.js";
+
+
+  //import ChessWebAPI from "chess-web-api";
+  // const getPuzzle = () => {
+  //   const chessAPI = new ChessWebAPI();
+  //   chessAPI.getDailyPuzzle().then(a => {
+
+  //     let game = new Chess(a.body.fen)
+  //     console.log(game.fen())
+  //     setChess(game)
+
+  //     setState({
+  //       player: game.turn(),
+  //       board: game.board(),
+  //     })
+  //   });
+  // }
+
 
 const ChessContext = createContext();
 
@@ -13,6 +33,35 @@ const ChessContextProvider = ({ children }) => {
 
     const [selectedSquare, setSelectedSquare] = useState(null);
 
+    const [chess, setChess] = useState(new Chess());
+
+    const [state, setState] = useState({
+        player: 'w',
+        board: []
+    });
+
+    const onTurn = useCallback(() => {
+        setTimeout(() => {
+            const game = makeBestMove(chess, 1)
+            setState({
+                player: game.player === "w" ? "b" : "w",
+                board: game.board(),
+            });
+        }, 250)
+    }, [chess]);
+
+    useEffect(() => {
+
+        setState({
+            player: state.player === "w" ? "b" : "w",
+            board: chess?.board(),
+        });
+    }, [chess]);
+
+
+    const getSlelectedSquare = () => {
+        return selectedSquare
+    }
 
     const selectSquare = (position, piece, chess, makeMove) => {
         const { row, col } = position;
@@ -53,7 +102,7 @@ const ChessContextProvider = ({ children }) => {
         // makemove
         const from = toPosition({ x: selectedSquare.row, y: selectedSquare.col });
         const to = toPosition({ x: position.row, y: position.col })
-        makeMove({from, to})
+        makeMove({ from, to })
 
         // console.log({ selectedSquare, position })
     };
@@ -62,7 +111,7 @@ const ChessContextProvider = ({ children }) => {
 
 
     return (
-        <ChessContext.Provider value={{ selectedSquare,setSelectedSquare, selectSquare }}>
+        <ChessContext.Provider value={{getSlelectedSquare, selectedSquare, setSelectedSquare, selectSquare, state, setState, onTurn, chess, setChess }}>
             {children}
         </ChessContext.Provider>
     )

@@ -8,6 +8,7 @@ import Puzzle from './src/screens/Puzzle';
 import Chess from './src/Chess/Chess';
 import Chess2 from './src/Chess2/Chess';
 import ChessContextProvider from './src/context/ChessContextProvider';
+import Level_choose from './src/screens/Level_choose';
 
 const Stack = createStackNavigator();
 
@@ -21,13 +22,14 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="chess2"
+          initialRouteName="Level"
           screenOptions={{
-            headerShown: false
+            // headerShown: false
           }}
         >
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="Level" component={Level_choose} />
           <Stack.Screen name="Puzzle" component={Puzzle} />
           <Stack.Screen name="chess" component={Chess} />
           <Stack.Screen name="chess2" component={Chess2} />

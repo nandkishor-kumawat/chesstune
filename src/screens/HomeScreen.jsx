@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ImageBackground, ScrollView, StyleSheet, View, Dimensions, Image, Text, SafeAreaView, TouchableOpacity, TextInput } from 'react-native';
-import { SvgUri, SvgXml } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 import GraphSvg from '../assets/graph.svg'
 import AwardSvg from '../assets/award.svg'
 import VideoCircleSvg from '../assets/videocircle.svg'
@@ -11,8 +11,8 @@ import ArrowRightSvg from '../assets/arrowright.svg'
 import GlobalSvg from '../assets/global.svg'
 import InstagramSvg from '../assets/instagram.svg'
 import SearchSvg from '../assets/search.svg'
+import TournamentSvg from '../assets/tournament.svg'
 import Header from '../components/Header';
-import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -83,8 +83,8 @@ const HomeScreen = () => {
                                 <View style={{ borderBottomWidth: 2, ...styles.boxContainer }}>
                                     <View style={{ borderRightWidth: 2, ...styles.box }}>
                                         <TouchableOpacity style={styles.ibox}>
-                                            {/* <Text style={styles.text}>Checkmate</Text> */}
-                                            {/* <Text style={styles.text}>Checkmate</Text> */}
+                                           <TournamentSvg width="20" height="20" />
+                                            <Text style={styles.text2}>Tournament</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.box}>
