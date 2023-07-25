@@ -4,7 +4,7 @@ import { ACTIVE_COLOR, BLACK, PIECES, SIZE, WHITE, toPosition } from './Notation
 import { getChessState } from '../context/ChessContextProvider';
 
 
-const Square = ({ position }) => {
+const Square = ({ position,level }) => {
     const { selectedSquare, setSelectedSquare, selectSquare, state, chess, onTurn } = getChessState();
 
     const { row, col } = position;
@@ -37,7 +37,7 @@ const Square = ({ position }) => {
             });
 
             setSelectedSquare(null);
-            onTurn();
+            onTurn(level);
         }
 
     }, [chess]);

@@ -8,21 +8,21 @@ import { makeBestMove } from '../Chess/script';
 import { Chess } from "chess.js";
 
 
-  //import ChessWebAPI from "chess-web-api";
-  // const getPuzzle = () => {
-  //   const chessAPI = new ChessWebAPI();
-  //   chessAPI.getDailyPuzzle().then(a => {
+//import ChessWebAPI from "chess-web-api";
+// const getPuzzle = () => {
+//   const chessAPI = new ChessWebAPI();
+//   chessAPI.getDailyPuzzle().then(a => {
 
-  //     let game = new Chess(a.body.fen)
-  //     console.log(game.fen())
-  //     setChess(game)
+//     let game = new Chess(a.body.fen)
+//     console.log(game.fen())
+//     setChess(game)
 
-  //     setState({
-  //       player: game.turn(),
-  //       board: game.board(),
-  //     })
-  //   });
-  // }
+//     setState({
+//       player: game.turn(),
+//       board: game.board(),
+//     })
+//   });
+// }
 
 
 const ChessContext = createContext();
@@ -32,6 +32,7 @@ export const getChessState = () => useContext(ChessContext);
 const ChessContextProvider = ({ children }) => {
 
     const [selectedSquare, setSelectedSquare] = useState(null);
+    const [level, setLevel] = useState(0);
 
     const [chess, setChess] = useState(new Chess());
 
@@ -40,14 +41,16 @@ const ChessContextProvider = ({ children }) => {
         board: []
     });
 
-    const onTurn = useCallback(() => {
-        setTimeout(() => {
-            const game = makeBestMove(chess, 1)
-            setState({
-                player: game.player === "w" ? "b" : "w",
-                board: game.board(),
-            });
-        }, 250)
+    const onTurn = useCallback((level) => {
+        if (level > 0) {
+            setTimeout(() => {
+                const game = makeBestMove(chess, 1)
+                setState({
+                    player: game.player === "w" ? "b" : "w",
+                    board: game.board(),
+                });
+            }, 250)
+        }
     }, [chess]);
 
     useEffect(() => {
@@ -111,7 +114,7 @@ const ChessContextProvider = ({ children }) => {
 
 
     return (
-        <ChessContext.Provider value={{getSlelectedSquare, selectedSquare, setSelectedSquare, selectSquare, state, setState, onTurn, chess, setChess }}>
+        <ChessContext.Provider value={{ getSlelectedSquare, selectedSquare, setSelectedSquare, selectSquare, state, setState, onTurn, chess, setChess, level, setLevel }}>
             {children}
         </ChessContext.Provider>
     )

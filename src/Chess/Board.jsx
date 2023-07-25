@@ -16,28 +16,30 @@ const styles = StyleSheet.create({
   },
 });
 
-const Row = ({ row }) => {
-
-
-  return (
-    <View style={{
-      flex: 1,
-      flexDirection: "row",
-    }}>
-      {new Array(8).fill(0).map((_, i) => (
-        <Square
-          key={i}
-          position={{ row, col: i }}
-        />
-      ))}
-    </View>
-  );
-};
 
 
 
 const Board = ({ level }) => {
-  console.log(level)
+  const Row = ({ row }) => {
+
+
+    return (
+      <View style={{
+        flex: 1,
+        flexDirection: "row",
+      }}>
+        {new Array(8).fill(0).map((_, i) => (
+          <Square
+            key={i}
+            position={{ row, col: i }}
+            level={level}
+          />
+        ))}
+      </View>
+    );
+  };
+
+  
   const { setChess, state, setState } = getChessState()
   // useEffect(() => {
   //   const chess = new Chess()

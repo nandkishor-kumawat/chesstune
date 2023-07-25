@@ -82,13 +82,13 @@ const HomeScreen = () => {
                             >
                                 <View style={{ borderBottomWidth: 2, ...styles.boxContainer }}>
                                     <View style={{ borderRightWidth: 2, ...styles.box }}>
-                                        <TouchableOpacity style={styles.ibox}>
+                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Puzzle',{level:0})}>
                                            <TournamentSvg width="20" height="20" />
                                             <Text style={styles.text2}>Tournament</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.box}>
-                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Puzzle')}>
+                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Level')}>
                                             <GraphSvg width="20" height="20" />
                                             <Text style={styles.text2}>Daily Puzzle</Text>
                                         </TouchableOpacity>

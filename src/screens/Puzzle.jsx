@@ -7,10 +7,14 @@ import { Chess } from 'chess.js';
 
 import ChessWebAPI from 'chess-web-api'
 import Board from '../Chess/Board';
+import { useRoute } from '@react-navigation/native';
 
 
 
 const Puzzle = () => {
+
+    const {params} = useRoute();
+
     // const [game, setGame] = useState();
 
     // useEffect(() => {
@@ -66,7 +70,7 @@ const Puzzle = () => {
                             // aspectRatio: 1
                         }}
                     >
-                        <Board />
+                        <Board level={params?.level}/>
                     </View>
 
                 </View>
