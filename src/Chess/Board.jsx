@@ -1,15 +1,12 @@
-import React, { useCallback, useRef, useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import React, { useCallback, useState } from "react";
+import { View, StyleSheet } from "react-native";
 import { Chess } from "chess.js";
-
-import Background from "./Background";
-import Piece from "./Piece";
 import { useEffect } from "react";
-import ChessWebAPI from "chess-web-api";
 import { BOARD_SIZE } from "./Notation";
-import { TouchableOpacity } from "react-native";
 import { Text } from "react-native";
-import { Button } from "react-native";
+import { makeBestMove } from "./script";
+import Square from "./Square";
+import { getChessState } from "../context/ChessContextProvider";
 
 
 const styles = StyleSheet.create({
@@ -19,66 +16,59 @@ const styles = StyleSheet.create({
   },
 });
 
-const Board = () => {
+const Row = ({ row }) => {
 
-
-  const [chess, setChess] = useState();
-
-  const [state, setState] = useState({
-    player: "w",
-    board: null
-  });
-
-  const getPuzzle = () => {
-    const chessAPI = new ChessWebAPI();
-    chessAPI.getDailyPuzzle().then(a => {
-
-      let game = new Chess(a.body.fen)
-      setChess(game)
-      console.log(game.fen())
-      setState({
-        player: game.turn(),
-        board: game.board(),
-      })
-    });
-  }
-
-  useEffect(() => {
-
-    getPuzzle()
-  }, [])
-
-  const onTurn = useCallback(() => {
-    setState({
-      player: state.player === "w" ? "b" : "w",
-      board: chess.board(),
-    });
-  }, [chess, state.player]);
+  console.log({ row })
 
   return (
+    <View style={{
+      flex: 1,
+      flexDirection: "row",
+    }}>
+      {new Array(8).fill(0).map((_, i) => (
+        <Square
+          key={i}
+          position={{ row, col: i }}
+        />
+      ))}
+    </View>
+  );
+};
+
+
+
+const Board = ({ level }) => {
+  console.log(level)
+  const { setChess, state, setState } = getChessState()
+  // useEffect(() => {
+  //   const chess = new Chess()
+  //   setChess(chess)
+  //   setState({
+  //     player: "w",
+  //     board: chess.board(),
+  //   })
+  // }, [])
+  return (
     <>
-      <View style={styles.container}>
-        <Background />
-        {state.board?.map((row, y) =>
-          row.map((piece, x) => {
-            if (piece !== null) {
-              return (
-                <Piece
-                  key={`${x}-${y}`}
-                  id={`${piece.color}${piece.type}`}
-                  startPosition={{ x, y }}
-                  chess={chess}
-                  onTurn={onTurn}
-                  enabled={state.player === piece.color}
-                />
-              );
-            }
-            return null;
-          })
-        )}
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+        {/* <Text
+          style={{
+            color: "white",
+            fontSize: 24
+          }}
+        >
+          {chess?.turn()}</Text> */}
+
+        <View style={styles.container}>
+          {new Array(8).fill(0).map((_, i) => (
+            <Row
+              key={i}
+              row={i}
+            />
+          ))}
+        </View>
       </View>
-      <Button onPress={getPuzzle} title="Get Puzzle" />
-  
     </>
   );
 };

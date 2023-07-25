@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 import Board from "./Board";
+import { useRoute } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,9 +14,15 @@ const styles = StyleSheet.create({
 });
 
 const Chess = () => {
+  
+  const {params} = useRoute();
+
+  // console.log(level)
+
   return (
     <View style={styles.container}>
-      <Board />
+      {/* <Board level={1} /> */}
+      <Board level={params?.level}/>
     </View>
   );
 };

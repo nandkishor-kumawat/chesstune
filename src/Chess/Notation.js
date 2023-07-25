@@ -2,31 +2,30 @@
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
+
 export const BOARD_SIZE = width - 30;
 export const SIZE = BOARD_SIZE / 8;
+export const WHITE = "rgb(100, 133, 68)";
+export const BLACK = "rgb(230, 233, 198)";
+export const ACTIVE_COLOR = "rgba(255, 255, 0, 0.5)";
 
-export const toTranslation = (to) => {
-  "worklet";
-  // worklet don't support destructuring yet
-  const tokens = to.split("");
-  const col = tokens[0];
-  const row = tokens[1];
-  if (!col || !row) {
-    throw new Error("Invalid notation: " + to);
-  }
-  const indexes = {
-    x: col.charCodeAt(0) - "a".charCodeAt(0),
-    y: parseInt(row, 10) - 1,
-  };
-  return {
-    x: indexes.x * SIZE,
-    y: 7 * SIZE - indexes.y * SIZE,
-  };
+export const PIECES = {
+  br: require("../assets/piece/br.png"),
+  bp: require("../assets/piece/bp.png"),
+  bn: require("../assets/piece/bn.png"),
+  bb: require("../assets/piece/bb.png"),
+  bq: require("../assets/piece/bq.png"),
+  bk: require("../assets/piece/bk.png"),
+  wr: require("../assets/piece/wr.png"),
+  wn: require("../assets/piece/wn.png"),
+  wb: require("../assets/piece/wb.png"),
+  wq: require("../assets/piece/wq.png"),
+  wk: require("../assets/piece/wk.png"),
+  wp: require("../assets/piece/wp.png"),
 };
 
 export const toPosition = ({ x, y }) => {
-  "worklet";
-  const col = String.fromCharCode(97 + Math.round(x / SIZE));
-  const row = `${8 - Math.round(y / SIZE)}`;
+  const row = `${8 - x}`;
+  const col = String.fromCharCode(97 + y);
   return `${col}${row}`;
 };

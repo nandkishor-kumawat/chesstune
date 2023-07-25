@@ -3,8 +3,8 @@ import React, { useCallback, useEffect } from 'react'
 import { createContext } from 'react'
 import { useContext } from 'react';
 import { useState } from 'react';
-import { toPosition } from '../Chess2/Notation';
-import { makeBestMove } from '../Chess2/script';
+import { toPosition } from '../Chess/Notation';
+import { makeBestMove } from '../Chess/script';
 import { Chess } from "chess.js";
 
 
