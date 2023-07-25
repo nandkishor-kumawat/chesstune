@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
 
 const Row = ({ row }) => {
 
-  console.log({ row })
 
   return (
     <View style={{
