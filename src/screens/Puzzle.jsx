@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import { Chess } from 'chess.js';
 
 import ChessWebAPI from 'chess-web-api'
-import Board from '../Chess/Board';
+import Board from '../Chess - Copy/Board';
 import { useRoute } from '@react-navigation/native';
 
 
@@ -53,7 +53,7 @@ const Puzzle = () => {
                             fontSize: 16,
                             color: '#fff'
                         }}
-                    >LEVEL: </Text>
+                    >LEVEL: {params?.level}</Text>
                 </View>
 
 

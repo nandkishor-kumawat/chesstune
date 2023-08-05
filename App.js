@@ -21,7 +21,7 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="HomeScreen"
+          initialRouteName="Level"
           screenOptions={{
             headerShown: false
           }}
