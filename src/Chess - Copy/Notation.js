@@ -12,7 +12,7 @@ export const ACTIVE_COLOR = "rgba(255, 255, 0, 0.5)";
 export const DIMENSION = 8;
 export const COLUMN_NAMES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-export const PIECES = {
+export const PIECE_IMAGES = {
   br: require("../assets/piece/br.png"),
   bp: require("../assets/piece/bp.png"),
   bn: require("../assets/piece/bn.png"),

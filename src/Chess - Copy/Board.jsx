@@ -2,39 +2,35 @@ import React, { useCallback, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Chess } from "chess.js";
 import { useEffect } from "react";
-import { BOARD_SIZE, COLUMN_NAMES, DIMENSION, toPosition } from "./Notation";
+import { BOARD_SIZE, COLUMN_NAMES, DIMENSION, PIECE_IMAGES, PIECE_SIZE, toPosition } from "./Notation";
 import { Text } from "react-native";
 import { makeBestMove } from "./script";
 import Square from "./Square";
 import { getChessState } from "../context/ChessContextProvider";
 import Piece from "./Piece";
-
-
-const styles = StyleSheet.create({
-  container: {
-    width: BOARD_SIZE,
-    height: BOARD_SIZE,
-  },
-});
-
-
+import { Image } from "react-native";
 
 
 const Board = ({ level }) => {
-  const { state, setState } = getChessState()
   const [game, setGame] = useState(new Chess());
   const [board, setBoard] = useState(createBoardData(game));
   const showNotation = true;
 
-  useEffect(() => {
-    // const chess = new Chess()
-    // setChess(chess)
-    // setState({
-    //   player: "w",
-    //   board: chess.board(),
-    // })
 
-  }, [])
+
+  // useEffect(() => {
+  //   // const chess = new Chess()
+  //   // setChess(chess)
+  //   // setState({
+  //   //   player: "w",
+  //   //   board: chess.board(),
+  //   // })
+  //   const history = game.history({ verbose: true });
+  //   const c = history.filter(item => item.captured);
+  //   const cw = history.filter(item => item.captured && item.color === 'b');
+  //   const cb = history.filter(item => item.captured && item.color === 'w');
+  //   // console.log(cw, '\n\n', cb, '\n\n')
+  // }, [board])
 
   // const onMove = ({ from, to }) => {
   //   game.move({
@@ -65,8 +61,6 @@ const Board = ({ level }) => {
       promotion: 'q',
     };
 
-
-
     game.move(moveConfig);
     setBoard(createBoardData(game));
 
@@ -76,7 +70,6 @@ const Board = ({ level }) => {
         setBoard(createBoardData(newGame));
       }, 20 * (3 - level));
     }
-
   };
 
 
@@ -105,16 +98,19 @@ const Board = ({ level }) => {
           ...square,
           selected: false,
           canMoveHere: false,
+          isCapture: false
         };
       }
 
       const isSelected = square.position === position;
       const canMoveHere = possibleMoves.indexOf(square.position) > -1;
+      const isCapture = square.type && canMoveHere;
 
       return {
         ...square,
         selected: isSelected,
         canMoveHere,
+        isCapture
       };
     });
 
@@ -167,6 +163,7 @@ const Board = ({ level }) => {
         canMoveHere,
         lastMove,
         inCheck,
+        isCapture
       } = square;
 
       const squareView = (
@@ -182,6 +179,7 @@ const Board = ({ level }) => {
           inCheck={inCheck}
           reverseBoard={reverseBoard}
           onSelected={movePiece}
+          isCapture={isCapture}
         />
       );
 
@@ -229,7 +227,30 @@ const Board = ({ level }) => {
   const reverseBoard = false;
 
 
+  const capturedPieces = type => {
+    console.log('first')
+    return (<View
+      style={{
+        flex: 1,
+        backgroundColor: 'rgba(37, 55, 107, 0.23)',
+        borderRadius: 2,
+        padding: 4,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+      }}
+    >
 
+      {game.history({ verbose: true }).filter(item => item.captured && item.color !== type).map((item, index) => (
+        <Image key={index} source={PIECE_IMAGES[`${type}${item.captured}`]}
+          style={{
+            width: PIECE_SIZE / 2,
+            height: PIECE_SIZE / 2,
+          }}
+        />
+      ))}
+
+    </View>)
+  }
 
 
 
@@ -237,13 +258,45 @@ const Board = ({ level }) => {
     <>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-        <Text
+        {/* <Text
           style={{
             color: "white",
             fontSize: 24
           }}
         >
-          {game?.turn()}</Text>
+          {game?.turn()}</Text> */}
+
+        <View
+          style={styles.chessInfoBar}
+        >
+          <View
+            style={{
+              backgroundColor: game.turn() === 'w' ? 'rgba(37, 55, 107, 0.75)' : null,
+              ...styles.chessInfo
+            }}
+          >
+            <Image source={PIECE_IMAGES['wk']}
+              style={{
+                width: PIECE_SIZE,
+                height: PIECE_SIZE,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: game.turn() === 'b' ? 'rgba(37, 55, 107, 0.75 )' : null,
+              alignItems: 'flex-end',
+              ...styles.chessInfo
+            }}
+          >
+            <Image source={PIECE_IMAGES['bk']}
+              style={{
+                width: PIECE_SIZE,
+                height: PIECE_SIZE,
+              }}
+            />
+          </View>
+        </View>
 
         <View
           style={{
@@ -259,9 +312,43 @@ const Board = ({ level }) => {
           {/* <Text>dsfsf</Text> */}
           {renderPieces()}
         </View>
+
+
+        <View
+          style={{
+            gap: 5,
+            flexDirection: 'row',
+            marginVertical: 5
+          }}
+        >
+
+          {capturedPieces('w')}
+          {capturedPieces('b')}
+
+        </View>
+
       </View>
     </>
   );
 };
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    width: BOARD_SIZE,
+    height: BOARD_SIZE,
+  },
+  chessInfoBar: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(37, 55, 107, 0.23)',
+    marginVertical: 5
+  },
+  chessInfo: {
+    height: 50,
+    flex: 1,
+    paddingHorizontal: 10
+  }
+})
 
 export default Board;

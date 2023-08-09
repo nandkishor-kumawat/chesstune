@@ -13,6 +13,7 @@ const Square = ({
   inCheck,
   reverseBoard,
   onSelected,
+  isCapture
 }) => {
   const isBlack = (rowIndex + columnIndex) % 2 === 0;
   let backgroundColor = isBlack ? BLACK : WHITE;
@@ -22,6 +23,9 @@ const Square = ({
   }
   else if (inCheck) {
     backgroundColor = '#C51B16';
+  }
+  else if (isCapture) {
+    backgroundColor = 'red';
   }
   // else if (lastMove) {
   //   backgroundColor = '#CDD26B';
@@ -83,7 +87,7 @@ const Square = ({
   };
 
   const renderMoveIndicator = () => {
-    if (canMoveHere) {
+    if (canMoveHere && !isCapture) {
       return <View style={{
         width: 24,
         height: 24,
