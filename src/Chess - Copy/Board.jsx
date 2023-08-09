@@ -64,7 +64,11 @@ const Board = ({ level }) => {
     game.move(moveConfig);
     setBoard(createBoardData(game));
 
-    if (level > 0) {
+    if (game.isCheckmate()) {
+      setTimeout(() => {
+        alert('CHECK MATE');
+      }, 500);
+    } else if (level > 0) {
       setTimeout(() => {
         const newGame = makeBestMove(game, level)
         setBoard(createBoardData(newGame));
@@ -228,7 +232,7 @@ const Board = ({ level }) => {
 
 
   const capturedPieces = type => {
-    console.log('first')
+
     return (<View
       style={{
         flex: 1,

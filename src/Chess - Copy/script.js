@@ -186,7 +186,7 @@ export function makeBestMove(game, depth) {
     var bestMove = getBestMove(game, depth);
 
     const { from, to } = bestMove;
-    console.log({ from, to })
+    // console.log({ from, to })
     game.move({
         from, to,
         promotion: 'q'
