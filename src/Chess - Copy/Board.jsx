@@ -4,33 +4,46 @@ import { Chess } from "chess.js";
 import { useEffect } from "react";
 import { BOARD_SIZE, COLUMN_NAMES, DIMENSION, PIECE_IMAGES, PIECE_SIZE, toPosition } from "./Notation";
 import { Text } from "react-native";
-import { makeBestMove } from "./script";
+import { getBestMove, makeBestMove } from "./script";
 import Square from "./Square";
 import { getChessState } from "../context/ChessContextProvider";
 import Piece from "./Piece";
 import { Image } from "react-native";
+import { Audio } from 'expo-av';
+import CaptureInfo from "./CaptureInfo";
+import PlayerInfo from "./PlayerInfo";
+import PromotionModal from "./PromotionModal";
+
+
 
 
 const Board = ({ level }) => {
   const [game, setGame] = useState(new Chess());
   const [board, setBoard] = useState(createBoardData(game));
   const showNotation = true;
+  const reverseBoard = false;
+
+  const [moveSound, setMoveSound] = useState(null);
+  const [winSound, setWinSound] = useState(null);
+  const [loseSound, setLoseSound] = useState(null);
+  const [captureSound, setCaptureSound] = useState(null);
+  const [checkSound, setCheckSound] = useState(null);
+
+  const loadSounds = async () => {
+    Audio.Sound.createAsync(require('../assets/sound/move.webm')).then(({ sound }) => setMoveSound(sound));
+    Audio.Sound.createAsync(require('../assets/sound/capture.webm')).then(({ sound }) => setCaptureSound(sound));
+    Audio.Sound.createAsync(require('../assets/sound/check.webm')).then(({ sound }) => setCheckSound(sound));
+    // await Audio.Sound.createAsync(require('../assets/sound/win.webm')).then(({ sound }) => setWinSound(sound));
+    // await Audio.Sound.createAsync(require('../assets/sound/lose.webm')).then(({ sound }) => setLoseSound(sound));
+  }
+
+  useEffect(() => {
+
+    loadSounds()
+  }, [])
 
 
 
-  // useEffect(() => {
-  //   // const chess = new Chess()
-  //   // setChess(chess)
-  //   // setState({
-  //   //   player: "w",
-  //   //   board: chess.board(),
-  //   // })
-  //   const history = game.history({ verbose: true });
-  //   const c = history.filter(item => item.captured);
-  //   const cw = history.filter(item => item.captured && item.color === 'b');
-  //   const cb = history.filter(item => item.captured && item.color === 'w');
-  //   // console.log(cw, '\n\n', cb, '\n\n')
-  // }, [board])
 
   // const onMove = ({ from, to }) => {
   //   game.move({
@@ -39,40 +52,84 @@ const Board = ({ level }) => {
   //     promotion: game.QUEEN,
   //   });
 
-  //   // if (game.turn() !== userColor) {
-  //   //   sendMessage({
-  //   //     t: 'move',
-  //   //     d: {
-  //   //       from,
-  //   //       to,
-  //   //     },
-  //   //   });
-  //   // }
+  //   if (game.turn() !== userColor) {
+  //     sendMessage({
+  //       t: 'move',
+  //       d: {
+  //         from,
+  //         to,
+  //       },
+  //     });
+  //   }
 
-  //   // setWhiteClock(latestClock.current.white);
-  //   // setBlackClock(latestClock.current.black);
+  //   setWhiteClock(latestClock.current.white);
+  //   setBlackClock(latestClock.current.black);
   // };
 
-  const movePiece = (to, from) => {
+
+
+  const [promotionModalVisible, setPromotionModalVisible] = useState(false);
+  const [promotionPromise, setPromotionPromise] = useState(null);
+
+  const getPromotion = () => {
+    setPromotionModalVisible(true);
+    return new Promise((resolve) => {
+      setPromotionPromise(() => resolve);
+    });
+  };
+
+  const closePromotionModal = () => {
+    setPromotionModalVisible(false);
+  };
+
+  const handlePieceSelect = (chosenPiece) => {
+
+    closePromotionModal();
+
+    if (promotionPromise) {
+      promotionPromise(chosenPiece);
+    }
+  };
+
+
+
+  const movePiece = async (to, from) => {
     const selectedPiece = board.find(item => item.selected);
+
+    const move = game.moves({
+      square: selectedPiece.position,
+      verbose: true,
+    }).find(m => m.to == to);
+
+    const isPromotion = move.promotion;
+    let promotion = 'q';
+
+    if (isPromotion) {
+      promotion = await getPromotion();
+    }
+
     const moveConfig = {
       to,
       from: from || selectedPiece.position,
-      promotion: 'q',
+      promotion,
     };
 
     game.move(moveConfig);
     setBoard(createBoardData(game));
 
+
     if (game.isCheckmate()) {
       setTimeout(() => {
         alert('CHECK MATE');
       }, 500);
-    } else if (level > 0) {
-      setTimeout(() => {
+    } else if (level < 0) {
+      // await moveSound.unloadAsync()
+      setTimeout(async () => {
+
         const newGame = makeBestMove(game, level)
         setBoard(createBoardData(newGame));
-      }, 20 * (3 - level));
+
+      }, 20 * (3 - level) * (3 - level));
     }
   };
 
@@ -228,79 +285,19 @@ const Board = ({ level }) => {
     });
   };
 
-  const reverseBoard = false;
-
-
-  const capturedPieces = type => {
-
-    return (<View
-      style={{
-        flex: 1,
-        backgroundColor: 'rgba(37, 55, 107, 0.23)',
-        borderRadius: 2,
-        padding: 4,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-      }}
-    >
-
-      {game.history({ verbose: true }).filter(item => item.captured && item.color !== type).map((item, index) => (
-        <Image key={index} source={PIECE_IMAGES[`${type}${item.captured}`]}
-          style={{
-            width: PIECE_SIZE / 2,
-            height: PIECE_SIZE / 2,
-          }}
-        />
-      ))}
-
-    </View>)
-  }
-
-
 
   return (
     <>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-        {/* <Text
-          style={{
-            color: "white",
-            fontSize: 24
-          }}
-        >
-          {game?.turn()}</Text> */}
+        <PlayerInfo game={game} />
 
-        <View
-          style={styles.chessInfoBar}
-        >
-          <View
-            style={{
-              backgroundColor: game.turn() === 'w' ? 'rgba(37, 55, 107, 0.75)' : null,
-              ...styles.chessInfo
-            }}
-          >
-            <Image source={PIECE_IMAGES['wk']}
-              style={{
-                width: PIECE_SIZE,
-                height: PIECE_SIZE,
-              }}
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: game.turn() === 'b' ? 'rgba(37, 55, 107, 0.75 )' : null,
-              alignItems: 'flex-end',
-              ...styles.chessInfo
-            }}
-          >
-            <Image source={PIECE_IMAGES['bk']}
-              style={{
-                width: PIECE_SIZE,
-                height: PIECE_SIZE,
-              }}
-            />
-          </View>
-        </View>
+        <PromotionModal
+          isVisible={promotionModalVisible}
+          onPieceSelect={handlePieceSelect}
+          color={game.turn()}
+        />
+
 
         <View
           style={{
@@ -313,23 +310,10 @@ const Board = ({ level }) => {
           }}
         >
           {renderSquares(reverseBoard)}
-          {/* <Text>dsfsf</Text> */}
           {renderPieces()}
         </View>
 
-
-        <View
-          style={{
-            gap: 5,
-            flexDirection: 'row',
-            marginVertical: 5
-          }}
-        >
-
-          {capturedPieces('w')}
-          {capturedPieces('b')}
-
-        </View>
+        <CaptureInfo game={game} />
 
       </View>
     </>

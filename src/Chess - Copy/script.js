@@ -200,7 +200,7 @@ export function makeBestMove(game, depth) {
 }
 
 let positionCount;
-function getBestMove(game, depth) {
+export function getBestMove(game, depth) {
 
     if (game.isGameOver()) {
         console.log('Game over');
