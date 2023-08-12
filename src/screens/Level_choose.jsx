@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
-// import Header from './Header'
+import Header from '../components/Header';
 
 const Level_choose = () => {
 
@@ -17,7 +17,7 @@ const Level_choose = () => {
     return (
         <View style={styles.Level_container}>
 
-            {/* <Header/> */}
+            <Header/>
             <View style={{ alignItems: 'center' }}>
                 <Text style={styles.Top_logo}>LEVEL</Text>
             </View>
@@ -51,7 +51,7 @@ const Level_choose = () => {
 
             <View style={{ alignItems: 'center' }}>
 
-                <TouchableOpacity style={styles.plate_box} onPress={() => { alert("your opacity is working") }}>
+                <TouchableOpacity style={styles.plate_box} >
                     <Image
 
                         style={{

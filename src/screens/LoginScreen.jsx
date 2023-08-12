@@ -1,48 +1,104 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
+import { auth, db, onSnapshot } from '../firebase/Firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
+import { GoogleAuthProvider } from "firebase/auth";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
-
-
-// import Linear_gradiant from './Linear_gradiant'
-
-
+GoogleSignin.configure({
+  webClientId: '894247559700-blib16lsq5lhcj77pfecejrmgtjqbh33.apps.googleusercontent.com'
+});
 
 
 const LoginScreen = () => {
 
+
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const provider = new GoogleAuthProvider();
 
-  const login_result = () => {
-    console.log(email, password)
+
+
+  // Somewhere in your code
+  const SingInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      // setState({ userInfo });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+  const login_result = async () => {
+    const name = "Rajkumar Nagar"
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+
+        const user = userCredential.user;
+
+        addDoc(collection(db, "users"), {
+          email,
+          uid: user.uid,
+          name: "Rajkumar nagar"
+        })
+        // ...
+      })
+      .catch((error) => {
+        console.log(error)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+
+
+
+
+
+    setEmail(''),
+      setPassword('')
+
   }
 
 
   return (
     <View style={styles.container}>
-   
 
-   <View style={{alignItems:'center',zIndex:2}} >
-      <View style={styles.logo_box}>
-        <Image
-          style={{
 
-            width: 53,
-            height: 60,
-            zIndex: 1,
-            marginLeft: 10
-          }}
+      <View style={{ alignItems: 'center', zIndex: 2 }} >
+        <View style={styles.logo_box}>
+          <Image
+            style={{
 
-          source={require('../assets/logo.png')
-          }
-        />
+              width: 53,
+              height: 60,
+              zIndex: 1,
+              marginLeft: 10
+            }}
 
+            source={require('../assets/logo.png')
+            }
+          />
+
+        </View>
       </View>
-      </View>
 
-      
-      <View style={{alignItems:'center',zIndex:1}} >
+
+      <View style={{ alignItems: 'center', zIndex: 1 }} >
         <View style={styles.detail_box}>
 
           <Text style={styles.signup}>SIGN IN</Text>
@@ -56,7 +112,7 @@ const LoginScreen = () => {
               style={styles.input}
               // placeholder="Enter your email"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={Text => { setEmail(Text) }}
             />
 
             <Text style={styles.label}>Password</Text>
@@ -65,57 +121,64 @@ const LoginScreen = () => {
               // placeholder="Enter your password"
               secureTextEntry
               value={password}
-              onChangeText={setPassword}
+              onChangeText={Text => { setPassword(Text) }}
             />
+
+            <TouchableOpacity style={styles.Submit_button}
+
+              onPress={login_result}
+            >
+              <Text style={styles.submit}>Submit</Text>
+            </TouchableOpacity>
           </View>
 
-        {/* </View> */}
-
-      
-      <Text style={styles.Or_logo}>OR</Text>
-
-      <View style={styles.input_bottom}>
-        <TouchableOpacity style={styles.TouchableOpacity}>
-          <Image
-            style={styles.input_logo}
-            source={require('../assets/google.png')}
-          />
-
-          <Text style={styles.sign_text}>Sign up with Google</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.TouchableOpacity}>
-          <Image
-            style={styles.input_logo}
-            source={require('../assets/google.png')}
-          />
-
-          <Text style={styles.sign_text}>Sign up with Liches</Text>
-        </TouchableOpacity>
 
 
+
+
+
+          <View style={styles.input_bottom}>
+            <TouchableOpacity style={styles.TouchableOpacity} onPress={SingInWithGoogle}>
+              <Image
+                style={styles.input_logo}
+                source={require('../assets/google.png')}
+              />
+
+              <Text style={styles.sign_text}>Sign up with Google</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.TouchableOpacity}>
+              <Image
+                style={styles.input_logo}
+                source={require('../assets/google.png')}
+              />
+
+              <Text style={styles.sign_text}>Sign up with Liches</Text>
+            </TouchableOpacity>
+
+
+          </View>
+        </View>
       </View>
-    </View>
- </View>
 
 
 
 
 
-  <Image
-    style={{
-      width: 360,
-      height: 215,
-     
-    }}
-    source={require('../assets/chess2.png')
-    }
-  />
+      <Image
+        style={{
+          width: 360,
+          height: 215,
+
+        }}
+        source={require('../assets/chess2.png')
+        }
+      />
 
 
-      </View >
+    </View >
 
-      )
+  )
 }
 
 const styles = StyleSheet.create({
@@ -127,9 +190,7 @@ const styles = StyleSheet.create({
 
   detail_box: {
     width: 338,
-    height: 443,
-    top: 20,
-
+    height: 470,
     backgroundColor: '#091b31',
     zIndex: 1,
     borderRadius: 9
@@ -139,7 +200,7 @@ const styles = StyleSheet.create({
     width: 73,
     height: 72,
     backgroundColor: '#1e5aa6',
-    top: 60,
+    top: 40,
     zIndex: 2,
     borderRadius: 8
   },
@@ -147,6 +208,27 @@ const styles = StyleSheet.create({
   bottom_part: {
     marginBottom: 30,
     backgroundColor: '#f50fbf'
+  },
+
+  Submit_button: {
+
+    width: 100,
+    height: 40,
+    backgroundColor: '#30365e',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#5e6670',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    alignSelf: 'flex-end'
+
+
+  },
+  submit: {
+    fontSize: 16,
+    color: '#ffffff',
+
   },
 
 
@@ -172,50 +254,50 @@ const styles = StyleSheet.create({
 
   input_box: {
     marginTop: 10,
-    paddingHorizontal:37
-    
+    paddingHorizontal: 37
+
   },
 
   signup: {
     color: '#FFF',
     fontSize: 25,
     textAlign: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     marginTop: 60,
     // fontFamily: 'Garamond',
     fontWeight: 700,
   },
   TouchableOpacity: {
-    
+
     width: 214,
     height: 46,
     flexDirection: 'row',
     backgroundColor: 'rgba(179, 199, 255, 0.20)',
-    padding: 10,
-    borderWidth:1,
-    borderColor:'#3d3933',
-    alignItems:'center',
-    paddingHorizontal:25,
-    borderRadius:5,
-    gap:20
+
+    borderWidth: 1,
+    borderColor: '#3d3933',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    gap: 15
   },
 
 
   input_bottom: {
-    marginTop:20,
+    marginTop: 40,
     alignItems: 'center',
-    gap:15
+    gap: 15
   },
 
   input_logo: {
     width: 24,
     height: 24,
-   
+
   },
   sign_text: {
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: 400,
-   
+
     color: '#ffffff'
   },
   Or_logo: {

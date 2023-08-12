@@ -28,7 +28,7 @@ const Header = () => {
                 }}
 
             >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate('Menu')}>
                     <Image
                         style={{
                             width: 26,
