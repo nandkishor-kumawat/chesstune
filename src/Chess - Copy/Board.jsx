@@ -13,6 +13,7 @@ import { Audio } from 'expo-av';
 import CaptureInfo from "./CaptureInfo";
 import PlayerInfo from "./PlayerInfo";
 import PromotionModal from "./PromotionModal";
+import ChessWebAPI from "chess-web-api";
 
 
 
@@ -42,8 +43,21 @@ const Board = ({ level }) => {
     loadSounds()
   }, [])
 
+  // import ChessWebAPI from "chess-web-api";
+  const getPuzzle = () => {
+    const chessAPI = new ChessWebAPI();
+    chessAPI.getDailyPuzzle().then(a => {
 
+      let game = new Chess(a.body.fen)
+      console.log(game.fen())
+      setGame(game)
+      setBoard(createBoardData(game))
+    });
+  }
 
+  useEffect(() => {
+    // getPuzzle()
+  }, [])
 
   // const onMove = ({ from, to }) => {
   //   game.move({
@@ -65,6 +79,32 @@ const Board = ({ level }) => {
   //   setWhiteClock(latestClock.current.white);
   //   setBlackClock(latestClock.current.black);
   // };
+
+  const getDailyPuzzle = () => {
+    const HTTP_BASE_URL = 'https://en.lichess.org';
+    fetch(`${HTTP_BASE_URL}/training/new?_${Date.now()}`, {
+      headers: {
+        Accept: 'application/vnd.lichess.v2+json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    })
+      .then(res => res.json())
+      .then(res => {
+        const fen = res.puzzle.fen
+        const chess = new Chess(fen)
+        setGame(chess);
+        setBoard(createBoardData(chess));
+        console.log(fen)
+      });
+
+  }
+
+  useEffect(() => {
+
+    getDailyPuzzle()
+
+  }, [])
+
 
 
 
@@ -122,7 +162,7 @@ const Board = ({ level }) => {
       setTimeout(() => {
         alert('CHECK MATE');
       }, 500);
-    } else if (level < 0) {
+    } else if (level > 0) {
       // await moveSound.unloadAsync()
       setTimeout(async () => {
 

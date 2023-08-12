@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableWithoutFeedback, Image } from 'react-native';
 import { PIECE_IMAGES, PIECE_SIZE } from './Notation';
 
-PIECE_IMAGES
 const Piece = ({
   type,
   color,
