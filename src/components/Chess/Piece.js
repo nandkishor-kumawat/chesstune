@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableWithoutFeedback, Image } from 'react-native';
-import { PIECE_IMAGES, PIECE_SIZE } from './Notation';
+import { PIECE_IMAGES, PIECE_SIZE } from './constants';
 
 const Piece = ({
   type,

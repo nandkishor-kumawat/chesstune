@@ -5,15 +5,15 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithP
 import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { GoogleAuthProvider } from "firebase/auth";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from '@react-native-google-signin/google-signin';
 
-GoogleSignin.configure({
-  webClientId: '894247559700-blib16lsq5lhcj77pfecejrmgtjqbh33.apps.googleusercontent.com'
-});
+// GoogleSignin.configure({
+//   webClientId: '894247559700-blib16lsq5lhcj77pfecejrmgtjqbh33.apps.googleusercontent.com'
+// });
 
 
 const LoginScreen = () => {

@@ -2,6 +2,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 
+import ProfileSvg from '../assets/profile.svg'
+
 const Header = () => {
     const navigation = useNavigation();
 
@@ -40,12 +42,13 @@ const Header = () => {
                 <TouchableOpacity
                     onPress={() => navigation.navigate('LoginScreen')}
                 >
-                    <Image
+                    {/* <Image
                         style={{
                             width: 26,
                             height: 26
                         }}
-                        source={require('../assets/profile.png')} />
+                        source={require('../assets/profile.png')} /> */}
+                        <ProfileSvg />
                 </TouchableOpacity>
             </View>
         </View>

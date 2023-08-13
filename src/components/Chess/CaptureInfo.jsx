@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { PIECE_IMAGES } from './Notation'
+import { PIECE_IMAGES } from './constants'
 import { Image } from 'react-native'
 
 const CaptureInfo = ({ game }) => {
