@@ -51,3 +51,21 @@ export function createBoardData(game, newFen) {
 
   return squares;
 }
+
+export const emptyBoard = () => {
+  const squares = []
+  new Array(8).fill(0).map((_, rowIndex) => {
+    new Array(8).fill(0).map((_, columnIndex) => {
+      squares.push({
+        position: toPosition({ x: rowIndex, y: columnIndex }),
+        rowIndex,
+        columnIndex,
+        selected: false,
+        canMoveHere: true,
+        lastMove: null,
+        inCheck: false,
+      })
+    })
+  })
+  return squares
+}

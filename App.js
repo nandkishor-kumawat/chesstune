@@ -28,7 +28,7 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="Level"
+          initialRouteName="createPuzzle"
           screenOptions={{
             headerShown: false
           }}

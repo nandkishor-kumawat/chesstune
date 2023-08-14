@@ -10,6 +10,8 @@ import PromotionModal from "./PromotionModal";
 import { getBestMove, makeBestMove } from "./script";
 import { BOARD_SIZE } from "./constants";
 import { createBoardData, getPuzzleData } from "./functions";
+import RenderPieces from "./RenderPieces";
+import RenderSquares from "./RenderSquares";
 
 
 const Board = ({ level }) => {
@@ -229,7 +231,7 @@ const Board = ({ level }) => {
       setTimeout(() => {
         alert('CHECK MATE');
       }, 500);
-    } else if (level < 0) {
+    } else if (level > 0) {
       // await moveSound.unloadAsync()
       setTimeout(async () => {
 
@@ -385,8 +387,10 @@ const Board = ({ level }) => {
             ...styles.container
           }}
         >
-          {renderSquares(reverseBoard)}
-          {renderPieces()}
+          {/* {renderSquares(reverseBoard)} */}
+          {/* {renderPieces()} */}
+          <RenderSquares board={board} movePiece={movePiece} reverseBoard={reverseBoard} showNotation={showNotation} />
+          <RenderPieces board={board} selectPiece={selectPiece} />
         </View>
 
         <CaptureInfo game={game} />

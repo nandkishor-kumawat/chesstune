@@ -10,6 +10,7 @@ const Square = ({
   selected,
   canMoveHere,
   lastMove,
+  showSuggestion,
   inCheck,
   reverseBoard,
   onSelected,
@@ -111,7 +112,7 @@ const Square = ({
           },
         ]}
       >
-        {renderMoveIndicator()}
+        {showSuggestion && renderMoveIndicator()}
         {showNotation && renderNotations(isBlack)}
       </View>
     </TouchableWithoutFeedback>
