@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { ACTIVE_COLOR, BLACK, DIMENSION, PIECE_SIZE, WHITE } from './Notation';
+import { ACTIVE_COLOR, BLACK, DIMENSION, PIECE_SIZE, WHITE } from './constants';
 
 const Square = ({
   showNotation,
@@ -112,7 +112,7 @@ const Square = ({
         ]}
       >
         {renderMoveIndicator()}
-        {/* {showNotation && renderNotations(isBlack)} */}
+        {showNotation && renderNotations(isBlack)}
       </View>
     </TouchableWithoutFeedback>
   );

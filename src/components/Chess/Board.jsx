@@ -1,28 +1,22 @@
-import React, { useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Chess } from "chess.js";
-import { useEffect } from "react";
-import { BOARD_SIZE, COLUMN_NAMES, DIMENSION, PIECE_IMAGES, PIECE_SIZE, toPosition } from "./Notation";
-import { Text } from "react-native";
-import { getBestMove, makeBestMove } from "./script";
-import Square from "./Square";
-import { getChessState } from "../context/ChessContextProvider";
-import Piece from "./Piece";
-import { Image } from "react-native";
 import { Audio } from 'expo-av';
+import Square from "./Square";
+import Piece from "./Piece";
 import CaptureInfo from "./CaptureInfo";
 import PlayerInfo from "./PlayerInfo";
 import PromotionModal from "./PromotionModal";
-import ChessWebAPI from "chess-web-api";
-
-
+import { getBestMove, makeBestMove } from "./script";
+import { BOARD_SIZE } from "./constants";
+import { createBoardData, getPuzzleData } from "./functions";
 
 
 const Board = ({ level }) => {
   const [game, setGame] = useState(new Chess());
   const [board, setBoard] = useState(createBoardData(game));
   const showNotation = true;
-  const reverseBoard = false;
+  const [reverseBoard, setReverseBoard] = useState(false);
 
   const [moveSound, setMoveSound] = useState(null);
   const [winSound, setWinSound] = useState(null);
@@ -31,11 +25,7 @@ const Board = ({ level }) => {
   const [checkSound, setCheckSound] = useState(null);
 
   const loadSounds = async () => {
-    Audio.Sound.createAsync(require('../assets/sound/move.webm')).then(({ sound }) => setMoveSound(sound));
-    Audio.Sound.createAsync(require('../assets/sound/capture.webm')).then(({ sound }) => setCaptureSound(sound));
-    Audio.Sound.createAsync(require('../assets/sound/check.webm')).then(({ sound }) => setCheckSound(sound));
-    // await Audio.Sound.createAsync(require('../assets/sound/win.webm')).then(({ sound }) => setWinSound(sound));
-    // await Audio.Sound.createAsync(require('../assets/sound/lose.webm')).then(({ sound }) => setLoseSound(sound));
+    Audio.Sound.createAsync(require('./sounds/move.webm')).then(({ sound }) => setMoveSound(sound));
   }
 
   useEffect(() => {
@@ -43,65 +33,66 @@ const Board = ({ level }) => {
     loadSounds()
   }, [])
 
-  // import ChessWebAPI from "chess-web-api";
-  const getPuzzle = () => {
-    const chessAPI = new ChessWebAPI();
-    chessAPI.getDailyPuzzle().then(a => {
 
-      let game = new Chess(a.body.fen)
-      console.log(game.fen())
-      setGame(game)
-      setBoard(createBoardData(game))
-    });
+  const getPuzzle = async () => {
+    const res = await getPuzzleData('training');
+
+    drawPuzzle(res.puzzle)
+
+    // const fen = res.puzzle.fen;
+    // const chess = new Chess(fen);
+    // setGame(chess);
+    // setBoard(createBoardData(chess));
+    // setReverseBoard(res.puzzle.color === 'white');
+
+
+    // const resJson = JSON.stringify(res);
+
+    // console.log(res.puzzle.fen);
+  };
+
+  const drawPuzzle = async (data) => {
+    const { id, fen, color, initialMove, lines } = data;
+
+    const puzzleMoves = [];
+    const WIN_KEY = 'win'
+    let nextObject = lines;
+    while (true) {
+      var nextKey = Object.keys(nextObject)[0];
+      nextObject = nextObject[nextKey];
+
+      puzzleMoves.push(nextKey);
+      // console.log(nextKey);
+
+      if (nextObject === WIN_KEY) {
+        puzzleMoves.push(WIN_KEY);
+        break;
+      }
+    }
+    const chess = new Chess(fen);
+    setGame(chess);
+    setBoard(createBoardData(chess));
+    setReverseBoard(color === 'white');
+
+    console.log(puzzleMoves)
+
+    // this.setState(
+    //   {
+    //     game: new Chess(fen),
+    //     puzzleId: id,
+    //     fen,
+    //     userColor: color === 'white' ? 'w' : 'b',
+    //     waiting: true,
+    //     puzzleMoves,
+    //   },
+    //   () => this.lateMove(initialMove),
+    // );
   }
 
+
   useEffect(() => {
+    // console.log(randomFEN())
     // getPuzzle()
-  }, [])
-
-  // const onMove = ({ from, to }) => {
-  //   game.move({
-  //     from,
-  //     to,
-  //     promotion: game.QUEEN,
-  //   });
-
-  //   if (game.turn() !== userColor) {
-  //     sendMessage({
-  //       t: 'move',
-  //       d: {
-  //         from,
-  //         to,
-  //       },
-  //     });
-  //   }
-
-  //   setWhiteClock(latestClock.current.white);
-  //   setBlackClock(latestClock.current.black);
-  // };
-
-  const getDailyPuzzle = () => {
-    const HTTP_BASE_URL = 'https://en.lichess.org';
-    fetch(`${HTTP_BASE_URL}/training/new?_${Date.now()}`, {
-      headers: {
-        Accept: 'application/vnd.lichess.v2+json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        const fen = res.puzzle.fen
-        const chess = new Chess(fen)
-        setGame(chess);
-        setBoard(createBoardData(chess));
-        console.log(fen)
-      });
-
-  }
-
-  useEffect(() => {
-
-    getDailyPuzzle()
 
   }, [])
 
@@ -123,15 +114,86 @@ const Board = ({ level }) => {
   };
 
   const handlePieceSelect = (chosenPiece) => {
-
     closePromotionModal();
-
     if (promotionPromise) {
       promotionPromise(chosenPiece);
     }
   };
 
+  const onMove = ({ from, to }) => {
+    const {
+      game,
+      userColor,
+      puzzleMoves,
+      resigned,
+      victory,
+    } = this.state;
+    const currentMoveIndex = this.getCurrentMoveIndex();
+    const moveStr = `${from}${to}`;
+    const moveLine = puzzleMoves[currentMoveIndex + 1];
+    const gameOver = victory || resigned;
 
+    game.move({
+      from,
+      to,
+      promotion: game.QUEEN,
+    });
+
+    let nextIndex = currentMoveIndex + 1;
+    if (!gameOver) {
+      nextIndex += 1;
+    }
+    const nextMove = puzzleMoves[nextIndex];
+
+    if (moveLine === WIN_KEY) {
+      this.setState({
+        victory: true,
+        success: false,
+        failed: false,
+      });
+    } else if (gameOver || game.turn() !== userColor) {
+      this.setState({
+        waiting: true,
+      });
+
+      // right move
+      if (moveLine === moveStr) {
+        if (nextMove) {
+          if (nextMove === WIN_KEY) {
+            this.setState({
+              victory: true,
+              success: false,
+              failed: false,
+            });
+          }
+
+          if (!gameOver) {
+            this.lateMove(nextMove);
+          }
+        }
+
+        this.setState({
+          success: true,
+          failed: false,
+        });
+      } else if (!gameOver) {
+        // undo
+        this.setState({
+          success: false,
+          failed: true,
+        });
+
+        setTimeout(
+          () => {
+            game.undo();
+            this.board.undo();
+            this.setState({ waiting: false });
+          },
+          1000,
+        );
+      }
+    }
+  };
 
   const movePiece = async (to, from) => {
     const selectedPiece = board.find(item => item.selected);
@@ -140,6 +202,7 @@ const Board = ({ level }) => {
       square: selectedPiece.position,
       verbose: true,
     }).find(m => m.to == to);
+    // console.log(move)
 
     const isPromotion = move.promotion;
     let promotion = 'q';
@@ -157,12 +220,16 @@ const Board = ({ level }) => {
     game.move(moveConfig);
     setBoard(createBoardData(game));
 
+    // onMove(moveConfig);
+
+    // moveSound.playAsync()
+    // loadSounds()
 
     if (game.isCheckmate()) {
       setTimeout(() => {
         alert('CHECK MATE');
       }, 500);
-    } else if (level > 0) {
+    } else if (level < 0) {
       // await moveSound.unloadAsync()
       setTimeout(async () => {
 
@@ -218,38 +285,7 @@ const Board = ({ level }) => {
     setBoard(newBoard);
   };
 
-  function createBoardData(game, newFen) {
-    if (newFen) {
-      game.load(newFen);
-    }
-    const boardData = game.board();
-    const squares = [];
-    const history = game.history({ verbose: true });
-    const lastMove = history[history.length - 1] || {};
-    const inCheck = game.inCheck();
-    const turn = game.turn();
 
-    boardData.forEach((row, rowIndex) => {
-      row.forEach((square, columnIndex) => {
-        const position = toPosition({ x: rowIndex, y: columnIndex })
-        const type = square ? square.type : '';
-        const color = square ? square.color : '';
-
-        squares.push({
-          ...square,
-          position,
-          rowIndex,
-          columnIndex,
-          selected: false,
-          canMoveHere: false,
-          lastMove: position === lastMove.to || position === lastMove.from,
-          inCheck: inCheck && turn === color && type === 'k',
-        });
-      });
-    });
-
-    return squares;
-  }
 
   const renderSquares = reverseBoard => {
 

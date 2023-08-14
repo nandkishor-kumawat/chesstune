@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image } from 'react-native';
 import { View, Text, Modal, Button, TouchableOpacity } from 'react-native';
-import { PIECE_IMAGES, PIECE_SIZE } from './Notation';
+import { PIECE_IMAGES, PIECE_SIZE } from './constants';
 import { StyleSheet } from 'react-native';
 
 

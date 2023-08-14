@@ -1,12 +1,8 @@
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import Header from '../components/Header'
-
-import { Chess } from 'chess.js';
-
-import ChessWebAPI from 'chess-web-api'
-import Board from '../Chess - Copy/Board';
+import Board from '../components/Chess/Board';
 import { useRoute } from '@react-navigation/native';
 
 

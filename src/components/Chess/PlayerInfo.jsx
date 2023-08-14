@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 import React from 'react'
-import { PIECE_IMAGES, PIECE_SIZE } from './Notation'
+import { PIECE_IMAGES, PIECE_SIZE } from './constants'
 import { StyleSheet } from 'react-native'
 import { Image } from 'react-native'
 

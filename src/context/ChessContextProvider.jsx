@@ -3,9 +3,9 @@ import React, { useCallback, useEffect } from 'react'
 import { createContext } from 'react'
 import { useContext } from 'react';
 import { useState } from 'react';
-import { toPosition } from '../Chess/Notation';
-import { makeBestMove } from '../Chess/script';
+import { makeBestMove } from '../components/Chess/script';
 import { Chess } from "chess.js";
+import { toPosition } from '../components/Chess/functions';
 
 
 //import ChessWebAPI from "chess-web-api";
