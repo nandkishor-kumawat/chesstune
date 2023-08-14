@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
 import { auth, db, onSnapshot } from '../firebase/Firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { GoogleAuthProvider } from "firebase/auth";
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 // GoogleSignin.configure({
 //   webClientId: '894247559700-blib16lsq5lhcj77pfecejrmgtjqbh33.apps.googleusercontent.com'
@@ -45,6 +45,8 @@ const LoginScreen = () => {
       }
     }
   };
+
+
   const login_result = async () => {
     const name = "Rajkumar Nagar"
     createUserWithEmailAndPassword(auth, email, password)
@@ -79,7 +81,7 @@ const LoginScreen = () => {
     <View style={styles.container}>
 
 
-      <View style={{ alignItems: 'center', zIndex: 2 }} >
+      <View style={{ alignItems: 'center', zIndex: 2, }} >
         <View style={styles.logo_box}>
           <Image
             style={{
