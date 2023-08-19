@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { ACTIVE_COLOR, BLACK, DIMENSION, PIECE_SIZE, WHITE } from './constants';
+import { ACTIVE_COLOR, BLACK, PIECE_SIZE, WHITE } from './constants';
 
 const Square = ({
   showNotation,
@@ -14,7 +14,9 @@ const Square = ({
   inCheck,
   reverseBoard,
   onSelected,
-  isCapture
+  isCapture,
+  disabled,
+  isInCorrect,
 }) => {
   const isBlack = (rowIndex + columnIndex) % 2 === 0;
   let backgroundColor = isBlack ? BLACK : WHITE;
@@ -28,9 +30,10 @@ const Square = ({
   else if (isCapture) {
     backgroundColor = 'red';
   }
-  // else if (lastMove) {
-  //   backgroundColor = '#CDD26B';
-  // }
+  else if (isInCorrect) {
+    backgroundColor = 'red';
+  }
+
 
   const onSquareSelected = () => {
     if (canMoveHere) {
@@ -101,7 +104,7 @@ const Square = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onSquareSelected} disabled={!canMoveHere}>
+    <TouchableWithoutFeedback onPress={onSquareSelected} disabled = {disabled}>
       <View
         style={[
           styles.container,

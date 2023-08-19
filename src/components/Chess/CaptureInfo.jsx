@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { PIECE_IMAGES } from './constants'
+import { BOARD_SIZE, PIECE_IMAGES } from './constants'
 import { Image } from 'react-native'
 
 const CaptureInfo = ({ game }) => {
@@ -43,6 +43,7 @@ const CaptureInfo = ({ game }) => {
                 flexDirection: 'row',
                 marginVertical: 5,
                 height: 40,
+                width: BOARD_SIZE
             }}
         >
             {capturedPieces('w')}

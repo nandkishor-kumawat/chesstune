@@ -9,13 +9,14 @@ const Piece = ({
   rowIndex,
   columnIndex,
   onSelected,
+  disabled,
 }) => {
   const onPieceSelected = () => {
     onSelected(position);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onPieceSelected}>
+    <TouchableWithoutFeedback onPress={onPieceSelected} disabled={disabled} >
       <Image
         style={{
           position: 'absolute',
@@ -25,7 +26,7 @@ const Piece = ({
           height: PIECE_SIZE,
           transform: [
             {
-              rotate: color==='b' ? '180deg' : '0deg',
+              rotate: color === 'b' ? '180deg' : '0deg',
             },
           ],
         }}

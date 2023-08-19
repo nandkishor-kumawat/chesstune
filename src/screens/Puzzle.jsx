@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import Header from '../components/Header'
 import Board from '../components/Chess/Board';
 import { useRoute } from '@react-navigation/native';
+import ChessGame from '../components/Chess/Chess';
 
 
 
@@ -66,7 +67,7 @@ const Puzzle = () => {
                             // aspectRatio: 1
                         }}
                     >
-                        <Board level={params?.level}/>
+                        <ChessGame level={params?.level}/>
                     </View>
 
                 </View>

@@ -1,8 +1,6 @@
-import { View } from 'react-native'
 import React from 'react'
-import { PIECE_IMAGES, PIECE_SIZE } from './constants'
-import { StyleSheet } from 'react-native'
-import { Image } from 'react-native'
+import { View,StyleSheet,Image } from 'react-native'
+import { BOARD_SIZE, PIECE_IMAGES, PIECE_SIZE } from './constants'
 
 const PlayerInfo = ({ game }) => {
     return (
@@ -42,7 +40,8 @@ const styles = StyleSheet.create({
     chessInfoBar: {
         flexDirection: 'row',
         backgroundColor: 'rgba(37, 55, 107, 0.23)',
-        marginVertical: 5
+        marginVertical: 10,
+        width: BOARD_SIZE
     },
     chessInfo: {
         height: 50,

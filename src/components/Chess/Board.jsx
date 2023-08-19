@@ -2,20 +2,18 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Chess } from "chess.js";
 import { Audio } from 'expo-av';
-import Square from "./Square";
-import Piece from "./Piece";
 import CaptureInfo from "./CaptureInfo";
 import PlayerInfo from "./PlayerInfo";
 import PromotionModal from "./PromotionModal";
 import { getBestMove, makeBestMove } from "./script";
-import { BOARD_SIZE } from "./constants";
+import { BOARD_SIZE, Sounds } from "./constants";
 import { createBoardData, getPuzzleData } from "./functions";
 import RenderPieces from "./RenderPieces";
 import RenderSquares from "./RenderSquares";
 
 
-const Board = ({ level }) => {
-  const [game, setGame] = useState(new Chess());
+const Board = ({ level, game, setGame, newFen }) => {
+
   const [board, setBoard] = useState(createBoardData(game));
   const showNotation = true;
   const [reverseBoard, setReverseBoard] = useState(false);
@@ -27,7 +25,7 @@ const Board = ({ level }) => {
   const [checkSound, setCheckSound] = useState(null);
 
   const loadSounds = async () => {
-    Audio.Sound.createAsync(require('./sounds/move.webm')).then(({ sound }) => setMoveSound(sound));
+    Audio.Sound.createAsync(Sounds.move).then(({ sound }) => setMoveSound(sound));
   }
 
   useEffect(() => {
@@ -93,10 +91,9 @@ const Board = ({ level }) => {
 
 
   useEffect(() => {
-    // console.log(randomFEN())
-    // getPuzzle()
-
-  }, [])
+    setBoard(createBoardData(game));
+    setReverseBoard(game.fen().split(' ')[1] === 'b');
+  }, [game])
 
 
 
@@ -221,6 +218,7 @@ const Board = ({ level }) => {
 
     game.move(moveConfig);
     setBoard(createBoardData(game));
+    console.log(game.history({verbose:true}))
 
     // onMove(moveConfig);
 
@@ -288,85 +286,9 @@ const Board = ({ level }) => {
   };
 
 
-
-  const renderSquares = reverseBoard => {
-
-    const rowSquares = [];
-
-    board.forEach(square => {
-      const {
-        rowIndex,
-        columnIndex,
-        position,
-        selected,
-        canMoveHere,
-        lastMove,
-        inCheck,
-        isCapture
-      } = square;
-
-      const squareView = (
-        <Square
-          key={`square_${rowIndex}_${columnIndex}`}
-          showNotation={showNotation}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          selected={selected}
-          canMoveHere={canMoveHere}
-          position={position}
-          lastMove={lastMove}
-          inCheck={inCheck}
-          reverseBoard={reverseBoard}
-          onSelected={movePiece}
-          isCapture={isCapture}
-        />
-      );
-
-      if (!rowSquares[rowIndex]) {
-        rowSquares[rowIndex] = [];
-      }
-      rowSquares[rowIndex].push(squareView);
-    });
-
-    return rowSquares.map((r, index) => {
-      return (
-        <View key={`row_${index}`} style={{ flexDirection: 'row' }}>
-          {r}
-        </View>
-      );
-    });
-  };
-
-  const renderPieces = () => {
-    return board.map(square => {
-      const {
-        type,
-        color,
-        rowIndex,
-        columnIndex,
-        position,
-      } = square;
-      if (type) {
-        return (
-          <Piece
-            key={`piece_${rowIndex}_${columnIndex}`}
-            type={type}
-            color={color}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            position={position}
-            onSelected={selectPiece}
-          />
-        );
-      }
-      return null;
-    });
-  };
-
-
   return (
     <>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
         <PlayerInfo game={game} />
 
@@ -387,8 +309,6 @@ const Board = ({ level }) => {
             ...styles.container
           }}
         >
-          {/* {renderSquares(reverseBoard)} */}
-          {/* {renderPieces()} */}
           <RenderSquares board={board} movePiece={movePiece} reverseBoard={reverseBoard} showNotation={showNotation} />
           <RenderPieces board={board} selectPiece={selectPiece} />
         </View>
@@ -406,16 +326,6 @@ const styles = StyleSheet.create({
   container: {
     width: BOARD_SIZE,
     height: BOARD_SIZE,
-  },
-  chessInfoBar: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(37, 55, 107, 0.23)',
-    marginVertical: 5
-  },
-  chessInfo: {
-    height: 50,
-    flex: 1,
-    paddingHorizontal: 10
   }
 })
 

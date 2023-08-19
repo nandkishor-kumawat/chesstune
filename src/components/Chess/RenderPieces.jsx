@@ -1,8 +1,7 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import Piece from './Piece';
 
-const RenderPieces = ({board, selectPiece,}) => {
+const RenderPieces = ({board, selectPiece,disabled=false}) => {
     return board.map(square => {
         const {
           type,
@@ -21,6 +20,7 @@ const RenderPieces = ({board, selectPiece,}) => {
               columnIndex={columnIndex}
               position={position}
               onSelected={selectPiece}
+              disabled={disabled}
             />
           );
         }

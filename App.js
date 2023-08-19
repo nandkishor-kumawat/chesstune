@@ -13,6 +13,8 @@ import Live_chess from './src/screens/Live_chess';
 import Menu from './src/screens/Menu';
 import User_datails from './src/screens/User_datails';
 import CreatePuzzle from './src/screens/CreatePuzzle';
+import PuzzlePreview from './src/screens/PuzzlePreview';
+import PuzzleBoard from './src/components/puzzle/PuzzleBoard';
 
 
 
@@ -28,7 +30,7 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="createPuzzle"
+          initialRouteName="PuzzleBoard"
           screenOptions={{
             headerShown: false
           }}
@@ -43,6 +45,8 @@ export default function App() {
           <Stack.Screen name="chess" component={Chess} />
           <Stack.Screen name="User_datails" component={User_datails} />
           <Stack.Screen name="createPuzzle" component={CreatePuzzle} />
+          <Stack.Screen name="PuzzlePreview" component={PuzzlePreview} />
+          <Stack.Screen name="PuzzleBoard" component={PuzzleBoard} />
         </Stack.Navigator>
       </NavigationContainer>
     </ChessContextProvider>
