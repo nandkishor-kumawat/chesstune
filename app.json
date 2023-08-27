@@ -2,6 +2,7 @@
   "expo": {
     "name": "chesstune",
     "slug": "chesstune",
+    "plugins": ["@react-native-google-signin/google-signin"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,14 +27,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.up8560004.chesstune"
+      "package": "com.up8560003.chesstune"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "559581cd-025b-4776-8fcc-b2663392024c"
+        "projectId": "b0799d96-8c87-441a-9052-b12bc2a428b5"
       }
     }
   }

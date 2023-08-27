@@ -1,78 +1,69 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
-import { auth, db, onSnapshot } from '../firebase/Firebase';
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from '@react-native-google-signin/google-signin';
-
-// GoogleSignin.configure({
-//   webClientId: '894247559700-blib16lsq5lhcj77pfecejrmgtjqbh33.apps.googleusercontent.com'
-// });
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import { addToCollection } from '../firebase/Firebase';
 
 
 const LoginScreen = () => {
 
+  GoogleSignin.configure({
+    webClientId: "677052425653-0k2g235qpkvumthuu79vvap1qja1blcc.apps.googleusercontent.com",
+  });
 
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const provider = new GoogleAuthProvider();
 
 
 
-  // Somewhere in your code
+  useEffect(() => {
+    // console.log(firestore)
+    const subscriber = auth().onAuthStateChanged((user) => {
+      console.log(user)
+    });
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+
+
+
   const SingInWithGoogle = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      // setState({ userInfo });
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    const userInfo = await auth().signInWithCredential(googleCredential);
+
+    const { isNewUser, profile } = userInfo.additionalUserInfo;
+    const { name, email } = profile
+    console.log({ isNewUser, email, name, });
+
+    if (isNewUser) {
+      try {
+        await addToCollection("users", { email, name });
+      } catch (error) {
+        console.log(error)
       }
     }
+
   };
 
 
   const login_result = async () => {
-    const name = "Rajkumar Nagar"
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
 
-        const user = userCredential.user;
+    try {
+      addToCollection("users", { email, password });
 
-        addDoc(collection(db, "users"), {
-          email,
-          uid: user.uid,
-          name: "Rajkumar nagar"
-        })
-        // ...
-      })
-      .catch((error) => {
-        console.log(error)
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-
-
-
-
-
-    setEmail(''),
-      setPassword('')
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 
@@ -140,7 +131,10 @@ const LoginScreen = () => {
 
 
           <View style={styles.input_bottom}>
-            <TouchableOpacity style={styles.TouchableOpacity} onPress={SingInWithGoogle}>
+            <TouchableOpacity
+              style={styles.TouchableOpacity}
+              onPress={SingInWithGoogle}
+            >
               <Image
                 style={styles.input_logo}
                 source={require('../assets/google.png')}
@@ -149,7 +143,10 @@ const LoginScreen = () => {
               <Text style={styles.sign_text}>Sign up with Google</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.TouchableOpacity}>
+            <TouchableOpacity
+              style={styles.TouchableOpacity}
+              onPress={() => auth().signOut()}
+            >
               <Image
                 style={styles.input_logo}
                 source={require('../assets/google.png')}

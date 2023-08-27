@@ -8,6 +8,8 @@ import { BOARD_SIZE, Sounds } from "../components/Chess/constants";
 import PlayerInfo from "../components/Chess/PlayerInfo";
 import RenderSquares from "../components/Chess/RenderSquares";
 import RenderPieces from "../components/Chess/RenderPieces";
+import { addToCollection, db } from "../firebase/Firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 
 
@@ -49,8 +51,13 @@ export default PuzzlePreview = () => {
   }
 
   const savePuzzle = async () => {
-    console.log({ fen, moves });
-    console.log(game.turn())
+
+    try {
+      const { id } = await addToCollection("puzzle", { fen, moves });
+      console.log("dsd", id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

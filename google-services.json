@@ -1,41 +1,49 @@
 {
   "project_info": {
-    "project_number": "511684173600",
-    "project_id": "chessapp-bf99f",
-    "storage_bucket": "chessapp-bf99f.appspot.com"
+    "project_number": "677052425653",
+    "project_id": "chesstune-9196a",
+    "storage_bucket": "chesstune-9196a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:511684173600:android:c7d731ad24accd5888c145",
+        "mobilesdk_app_id": "1:677052425653:android:c0d002d4091edd08f465fc",
         "android_client_info": {
-          "package_name": "com.up8560004.chesstune"
+          "package_name": "com.up8560003.chesstune"
         }
       },
       "oauth_client": [
         {
-          "client_id": "511684173600-u5mffrhatf4ticl3vm9g4rnn9enp6rgl.apps.googleusercontent.com",
+          "client_id": "677052425653-a2bk0iluaj6ijac3nh2nju2ihbtlvl7t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.up8560004.chesstune",
-            "certificate_hash": "4d6fc22fcbb0d25ad9818308e267ea79925503a6"
+            "package_name": "com.up8560003.chesstune",
+            "certificate_hash": "62f28932b435d854967ca367532b3382d0f2d6fe"
           }
         },
         {
-          "client_id": "511684173600-uj904fc5fa0jfi3l99mle317vdibjd85.apps.googleusercontent.com",
+          "client_id": "677052425653-qsjk121heiktt8bs9n76osi492dht48i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.up8560003.chesstune",
+            "certificate_hash": "bd7f29e3f24d7189dbff9b12cb0cb0fb5462ea38"
+          }
+        },
+        {
+          "client_id": "677052425653-0k2g235qpkvumthuu79vvap1qja1blcc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCGrOflJgDk_OAbmhedQsjgeKX66f6J2bw"
+          "current_key": "AIzaSyC_r7OuO2G0qXuaapQEBqF9vxzh_fXp8N8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "511684173600-uj904fc5fa0jfi3l99mle317vdibjd85.apps.googleusercontent.com",
+              "client_id": "677052425653-0k2g235qpkvumthuu79vvap1qja1blcc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

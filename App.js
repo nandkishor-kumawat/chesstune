@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import 'expo-dev-client';
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './src/screens/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -30,7 +31,7 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="PuzzleBoard"
+          initialRouteName="LoginScreen"
           screenOptions={{
             headerShown: false
           }}
