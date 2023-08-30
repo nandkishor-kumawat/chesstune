@@ -18,6 +18,10 @@ const PuzzleList = () => {
             })
     }, [])
 
+    if(puzzles.length==0){
+        return <Text style={{padding:10}}>Loading...</Text>
+    }
+
     return (
         <ScrollView style={{ flex: 1 }}>
             <View

@@ -86,7 +86,7 @@ const HomeScreen = () => {
                             >
                                 <View style={{ borderBottomWidth: 2, ...styles.boxContainer }}>
                                     <View style={{ borderRightWidth: 2, ...styles.box }}>
-                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Puzzle', { level: 0 })}>
+                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('PuzzleList')}>
                                             <TournamentSvg width="20" height="20" />
                                             <Text style={styles.text2}>Tournament</Text>
                                         </TouchableOpacity>
