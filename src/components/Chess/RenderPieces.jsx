@@ -1,7 +1,7 @@
 import React from 'react'
 import Piece from './Piece';
 
-const RenderPieces = ({board, selectPiece,disabled=false}) => {
+const RenderPieces = ({board, selectPiece,disabled=false, width}) => {
     return board.map(square => {
         const {
           type,
@@ -21,6 +21,7 @@ const RenderPieces = ({board, selectPiece,disabled=false}) => {
               position={position}
               onSelected={selectPiece}
               disabled={disabled}
+              width={width}
             />
           );
         }

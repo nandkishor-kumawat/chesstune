@@ -10,6 +10,7 @@ const Piece = ({
   columnIndex,
   onSelected,
   disabled,
+  width=PIECE_SIZE,
 }) => {
   const onPieceSelected = () => {
     onSelected(position);
@@ -20,10 +21,10 @@ const Piece = ({
       <Image
         style={{
           position: 'absolute',
-          top: PIECE_SIZE * rowIndex,
-          left: PIECE_SIZE * columnIndex,
-          width: PIECE_SIZE,
-          height: PIECE_SIZE,
+          top: width * rowIndex,
+          left: width * columnIndex,
+          width: width,
+          height: width,
           transform: [
             {
               rotate: color === 'b' ? '180deg' : '0deg',

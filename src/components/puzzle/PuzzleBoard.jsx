@@ -9,69 +9,78 @@ import RenderPieces from "../Chess/RenderPieces";
 import CaptureInfo from "../Chess/CaptureInfo";
 import { BOARD_SIZE, Sounds } from "../Chess/constants";
 import { createBoardData } from "../Chess/functions";
+import { useRoute } from "@react-navigation/native";
 
 
 const PuzzleBoard = ({ level, newFen }) => {
+  // const chessData = {
+  //   fen: "8/8/8/8/8/8/2k5/6K1 w",
+  //   moves: [
+  //     {
+  //       after: "8/8/8/8/8/8/2k3K1/8 b - - 1 1",
+  //       before: "8/8/8/8/8/8/2k5/6K1 w - - 0 1",
+  //       color: "w",
+  //       flags: "n",
+  //       from: "g1",
+  //       lan: "g1g2",
+  //       piece: "k",
+  //       san: "Kg2",
+  //       to: "g2"
+  //     },
+  //     {
+  //       after: "8/8/8/8/8/2k5/6K1/8 w - - 2 2",
+  //       before: "8/8/8/8/8/8/2k3K1/8 b - - 1 1",
+  //       color: "b",
+  //       flags: "n",
+  //       from: "c2",
+  //       lan: "c2c3",
+  //       piece: "k",
+  //       san: "Kc3",
+  //       to: "c3"
+  //     },
+  //     {
+  //       after: "8/8/8/8/8/2k3K1/8/8 b - - 3 2",
+  //       before: "8/8/8/8/8/2k5/6K1/8 w - - 2 2",
+  //       color: "w",
+  //       flags: "n",
+  //       from: "g2",
+  //       lan: "g2g3",
+  //       piece: "k",
+  //       san: "Kg3",
+  //       to: "g3"
+  //     },
+  //     {
+  //       after: "8/8/8/8/8/3k2K1/8/8 w - - 4 3",
+  //       before: "8/8/8/8/8/2k3K1/8/8 b - - 3 2",
+  //       color: "b",
+  //       flags: "n",
+  //       from: "c3",
+  //       lan: "c3d3",
+  //       piece: "k",
+  //       san: "Kd3",
+  //       to: "d3"
+  //     },
+  //     {
+  //       after: "8/8/8/8/6K1/3k4/8/8 b - - 5 3",
+  //       before: "8/8/8/8/8/3k2K1/8/8 w - - 4 3",
+  //       color: "w",
+  //       flags: "n",
+  //       from: "g3",
+  //       lan: "g3g4",
+  //       piece: "k",
+  //       san: "Kg4",
+  //       to: "g4"
+  //     }
+  //   ]
+  // };
+
+  const {params} = useRoute();
+  const {fen, moves}= params;
+
   const chessData = {
-    fen: "8/8/8/8/8/8/2k5/6K1 w",
-    moves: [
-      {
-        after: "8/8/8/8/8/8/2k3K1/8 b - - 1 1",
-        before: "8/8/8/8/8/8/2k5/6K1 w - - 0 1",
-        color: "w",
-        flags: "n",
-        from: "g1",
-        lan: "g1g2",
-        piece: "k",
-        san: "Kg2",
-        to: "g2"
-      },
-      {
-        after: "8/8/8/8/8/2k5/6K1/8 w - - 2 2",
-        before: "8/8/8/8/8/8/2k3K1/8 b - - 1 1",
-        color: "b",
-        flags: "n",
-        from: "c2",
-        lan: "c2c3",
-        piece: "k",
-        san: "Kc3",
-        to: "c3"
-      },
-      {
-        after: "8/8/8/8/8/2k3K1/8/8 b - - 3 2",
-        before: "8/8/8/8/8/2k5/6K1/8 w - - 2 2",
-        color: "w",
-        flags: "n",
-        from: "g2",
-        lan: "g2g3",
-        piece: "k",
-        san: "Kg3",
-        to: "g3"
-      },
-      {
-        after: "8/8/8/8/8/3k2K1/8/8 w - - 4 3",
-        before: "8/8/8/8/8/2k3K1/8/8 b - - 3 2",
-        color: "b",
-        flags: "n",
-        from: "c3",
-        lan: "c3d3",
-        piece: "k",
-        san: "Kd3",
-        to: "d3"
-      },
-      {
-        after: "8/8/8/8/6K1/3k4/8/8 b - - 5 3",
-        before: "8/8/8/8/8/3k2K1/8/8 w - - 4 3",
-        color: "w",
-        flags: "n",
-        from: "g3",
-        lan: "g3g4",
-        piece: "k",
-        san: "Kg4",
-        to: "g4"
-      }
-    ]
-  };
+    fen,
+    moves
+  }
 
   const [game, setGame] = useState(new Chess(chessData.fen));
   const [board, setBoard] = useState(createBoardData(game));

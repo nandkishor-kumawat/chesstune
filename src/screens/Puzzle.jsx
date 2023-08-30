@@ -2,7 +2,6 @@ import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import Header from '../components/Header'
-import Board from '../components/Chess/Board';
 import { useRoute } from '@react-navigation/native';
 import ChessGame from '../components/Chess/Chess';
 

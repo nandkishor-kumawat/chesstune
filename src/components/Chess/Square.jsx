@@ -17,6 +17,7 @@ const Square = ({
   isCapture,
   disabled,
   isInCorrect,
+  width = PIECE_SIZE
 }) => {
   const isBlack = (rowIndex + columnIndex) % 2 === 0;
   let backgroundColor = isBlack ? BLACK : WHITE;
@@ -104,14 +105,14 @@ const Square = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onSquareSelected} disabled = {disabled}>
+    <TouchableWithoutFeedback onPress={onSquareSelected} disabled={disabled}>
       <View
         style={[
           styles.container,
           {
             backgroundColor,
-            width: PIECE_SIZE,
-            height: PIECE_SIZE,
+            width: width,
+            height: width,
           },
         ]}
       >

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, View, Dimensions, Image, Text, SafeAreaView, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GraphSvg from '../assets/graph.svg'
@@ -13,12 +13,16 @@ import InstagramSvg from '../assets/instagram.svg'
 import SearchSvg from '../assets/search.svg'
 import TournamentSvg from '../assets/tournament.svg'
 import Header from '../components/Header';
+import DummyBoard from '../components/DummyBoard';
+import { getData } from '../firebase/Firebase';
 
 
 
 const HomeScreen = () => {
     const { width, height } = Dimensions.get('window');
     const navigation = useNavigation();
+
+
     return (
         <SafeAreaView style={styles.container}>
 
@@ -82,8 +86,8 @@ const HomeScreen = () => {
                             >
                                 <View style={{ borderBottomWidth: 2, ...styles.boxContainer }}>
                                     <View style={{ borderRightWidth: 2, ...styles.box }}>
-                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Puzzle',{level:0})}>
-                                           <TournamentSvg width="20" height="20" />
+                                        <TouchableOpacity style={styles.ibox} onPress={() => navigation.navigate('Puzzle', { level: 0 })}>
+                                            <TournamentSvg width="20" height="20" />
                                             <Text style={styles.text2}>Tournament</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -157,6 +161,7 @@ const HomeScreen = () => {
                                 }}
                             >
                                 <Image source={require('../assets/chessboard.png')} />
+
                             </View>
 
                             <View style={{

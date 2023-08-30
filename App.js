@@ -16,7 +16,7 @@ import User_datails from './src/screens/User_datails';
 import CreatePuzzle from './src/screens/CreatePuzzle';
 import PuzzlePreview from './src/screens/PuzzlePreview';
 import PuzzleBoard from './src/components/puzzle/PuzzleBoard';
-
+import PuzzleList from './src/screens/PuzzleList';
 
 
 const Stack = createStackNavigator();
@@ -31,16 +31,16 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="LoginScreen"
+          initialRouteName="PuzzleList"
           screenOptions={{
             headerShown: false
           }}
         >
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name='Menu' component={Menu} />
           <Stack.Screen name='Live_chess' component={Live_chess} />
           <Stack.Screen name='About' component={About} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="Level" component={Level_choose} />
           <Stack.Screen name="Puzzle" component={Puzzle} />
           <Stack.Screen name="chess" component={Chess} />
@@ -48,6 +48,7 @@ export default function App() {
           <Stack.Screen name="createPuzzle" component={CreatePuzzle} />
           <Stack.Screen name="PuzzlePreview" component={PuzzlePreview} />
           <Stack.Screen name="PuzzleBoard" component={PuzzleBoard} />
+          <Stack.Screen name="PuzzleList" component={PuzzleList} />
         </Stack.Navigator>
       </NavigationContainer>
     </ChessContextProvider>

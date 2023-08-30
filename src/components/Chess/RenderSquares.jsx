@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Square from './Square';
 
-const RenderSquares = ({board, movePiece,disabled=false, showNotation=false,showSuggestion=true, reverseBoard=false}) => {
+const RenderSquares = ({board, movePiece,disabled=false, showNotation=false,showSuggestion=true, reverseBoard=false, width}) => {
 
     const rowSquares = [];
 
@@ -36,6 +36,7 @@ const RenderSquares = ({board, movePiece,disabled=false, showNotation=false,show
                 isCapture={isCapture}
                 disabled={disabled}
                 isInCorrect={isInCorrect}
+                width={width}
             />
         );
 

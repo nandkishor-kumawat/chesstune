@@ -9,12 +9,11 @@ import PlayerInfo from "../components/Chess/PlayerInfo";
 import RenderSquares from "../components/Chess/RenderSquares";
 import RenderPieces from "../components/Chess/RenderPieces";
 import { addToCollection, db } from "../firebase/Firebase";
-import { addDoc, collection } from "firebase/firestore";
 
 
 
 
-export default PuzzlePreview = () => {
+const PuzzlePreview = () => {
 
   const { fen, moves } = useRoute().params;
   const [game, setGame] = useState(new Chess(fen));
@@ -54,7 +53,8 @@ export default PuzzlePreview = () => {
 
     try {
       const { id } = await addToCollection("puzzle", { fen, moves });
-      console.log("dsd", id)
+      console.log("dsd", id);
+      navigation.navigate('/PuzzleList', { id });
     } catch (error) {
       console.log(error)
     }
@@ -124,3 +124,4 @@ const styles = StyleSheet.create({
   }
 })
 
+export default PuzzlePreview;
