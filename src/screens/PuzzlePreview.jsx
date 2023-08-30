@@ -8,9 +8,7 @@ import { BOARD_SIZE, Sounds } from "../components/Chess/constants";
 import PlayerInfo from "../components/Chess/PlayerInfo";
 import RenderSquares from "../components/Chess/RenderSquares";
 import RenderPieces from "../components/Chess/RenderPieces";
-import { addToCollection, db } from "../firebase/Firebase";
-
-
+import { addToCollection } from "../firebase/Firebase";
 
 
 const PuzzlePreview = () => {
@@ -40,7 +38,6 @@ const PuzzlePreview = () => {
       });
     };
 
-
     for (const { from, to, promotion } of moves) {
       const { sound } = await Audio.Sound.createAsync(Sounds.move);
       await movePiece({ to, from, promotion, sound });
@@ -50,10 +47,9 @@ const PuzzlePreview = () => {
   }
 
   const savePuzzle = async () => {
-
     try {
       const { id } = await addToCollection("puzzle", { fen, moves });
-      console.log("dsd", id);
+
       navigation.navigate('/PuzzleList', { id });
     } catch (error) {
       console.log(error)
@@ -62,7 +58,14 @@ const PuzzlePreview = () => {
 
   return (
     <>
-      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#050A18' }}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+          backgroundColor: '#050A18'
+        }}
+      >
 
         <PlayerInfo game={game} />
 

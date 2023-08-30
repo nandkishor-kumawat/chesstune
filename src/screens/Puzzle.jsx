@@ -25,7 +25,6 @@ const Puzzle = () => {
     //         console.log(a)
     //         // console.log(game.fen())
     //     });
-
     // }, []);
 
 

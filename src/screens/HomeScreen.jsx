@@ -13,9 +13,6 @@ import InstagramSvg from '../assets/instagram.svg'
 import SearchSvg from '../assets/search.svg'
 import TournamentSvg from '../assets/tournament.svg'
 import Header from '../components/Header';
-import DummyBoard from '../components/DummyBoard';
-import { getData } from '../firebase/Firebase';
-
 
 
 const HomeScreen = () => {

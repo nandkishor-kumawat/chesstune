@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 
-const DummyBoard = ({ puzzle, SIZE=BOARD_SIZE }) => {
+const DummyBoard = ({ puzzle}) => {
     const { fen, moves } = puzzle;
     const [game, setGame] = useState(new Chess(fen));
     const [board, setBoard] = useState(createBoardData(game));
@@ -22,12 +22,16 @@ const DummyBoard = ({ puzzle, SIZE=BOARD_SIZE }) => {
         setReverseBoard(game?.fen().split(' ')[1] === 'b');
     }, [game])
 
-    const navigation = useNavigation()
+    const navigation = useNavigation();
 
 
     return (
         <>
-            <TouchableWithoutFeedback style={{ justifyContent: 'center', alignItems: 'center' }}
+            <TouchableWithoutFeedback
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
                 onPress={() => {
                     navigation.navigate("PuzzleBoard", {
                         game: game,
@@ -47,7 +51,7 @@ const DummyBoard = ({ puzzle, SIZE=BOARD_SIZE }) => {
                         ...styles.container
                     }}
                 >
-                    <RenderSquares board={board} disabled={true} width={PIECE_SIZE / 1.5}/>
+                    <RenderSquares board={board} disabled={true} width={PIECE_SIZE / 1.5} />
                     <RenderPieces board={board} disabled={true} width={PIECE_SIZE / 1.5} />
                 </View>
 
@@ -60,8 +64,8 @@ const DummyBoard = ({ puzzle, SIZE=BOARD_SIZE }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: BOARD_SIZE/1.5,
-        height: BOARD_SIZE/1.5,
+        width: BOARD_SIZE / 1.5,
+        height: BOARD_SIZE / 1.5,
     }
 })
 
