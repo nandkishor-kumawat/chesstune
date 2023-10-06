@@ -275,7 +275,7 @@ const CreatePuzzle = () => {
                 width: BOARD_SIZE,
                 height: BOARD_SIZE,
             }}>
-                <RenderSquares board={board} movePiece={selectPiece} reverseBoard={false} showNotation={true} showSuggestion={false} />
+                <RenderSquares board={board} movePiece={selectPiece} reverseBoard={player === 'b'} showNotation={true} showSuggestion={false} />
                 <RenderPieces board={board} selectPiece={selectPiece} />
             </View>}
 

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Chess } from "chess.js";
 import { createBoardData } from "../components/Chess/functions";
 import { Audio } from "expo-av";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { BOARD_SIZE, Sounds } from "../components/Chess/constants";
 import PlayerInfo from "../components/Chess/PlayerInfo";
 import RenderSquares from "../components/Chess/RenderSquares";
@@ -21,6 +21,7 @@ const PuzzlePreview = () => {
   const [isBtnDisabled, setIsBtnDisabled] = useState(false);
 
 
+  const navigation = useNavigation();
   const startPreview = async () => {
 
     setIsBtnDisabled(true);
@@ -50,7 +51,7 @@ const PuzzlePreview = () => {
     try {
       const { id } = await addToCollection("puzzle", { fen, moves });
 
-      navigation.navigate('/PuzzleList', { id });
+      navigation.navigate('PuzzleList', { id });
     } catch (error) {
       console.log(error)
     }

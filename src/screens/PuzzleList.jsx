@@ -19,7 +19,7 @@ const PuzzleList = () => {
     }, [])
 
     if(puzzles.length==0){
-        return <Text style={{padding:10}}>Loading...</Text>
+        return <Text style={{padding:10}}>Loading puzzles...</Text>
     }
 
     return (

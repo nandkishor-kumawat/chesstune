@@ -31,7 +31,7 @@ export default function App() {
           barStyle="light-content"
         />
         <Stack.Navigator
-          initialRouteName="HomeScreen"
+          initialRouteName="PuzzleList"
           screenOptions={{
             headerShown: false
           }}
